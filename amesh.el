@@ -1,21 +1,16 @@
-;;; lgtm.el --- lgtm.in client
+;;; amesh.el --- Amesh for emacs
 
-;; Copyright (C) 2015 Hiroki Kumamoto
+;; Copyright (C) 2010-2018 decoch
 
-;; Author: Hiroki Kumamoto <kumabook@live.jp>
-;; Version: 0.1
-;; Package-Requires: ((request "1.0"))
-;; Keywords: multimedia, frobnicate
-;; URL: https://github.com/kumabook/lgtm-emacs
+;; Author: decoch
+;; Created: 4 Sep 2018
+;; Keywords: amesh
 
 ;;; Commentary:
 
-;; Show a LGTM image from lgtm.in at random
+;; Show cloud image from amesh at now
 
 ;;; Code:
-
-(require 'url)
-(require 'json)
 
 (defun amesh ()
   "Show a amesh image."
@@ -23,7 +18,7 @@
          (switch-to-buffer (get-buffer-create "*lgtm*"))
          (insert-image-from-url (amesh-image-path))
          (insert "\n")
-         (insert (image-path))))
+         (insert (amesh-image-path))))
 
 (defun insert-image-from-url (url)
   "Insert image to buffer from URL."
@@ -37,19 +32,19 @@
       (kill-buffer buffer))))
 
 (defun amesh-image-path ()
-  "Get amesh image'path."
+  "Get path of amesh's image."
   (concat "http://tokyo-ame.jwa.or.jp/mesh/000/" (adjusted-time) ".gif"))
 
 (defun adjusted-time ()
-  "Get time of eamesh image' path."
+  "Get time of amesh's image."
   (concat (format-time-string "%Y%m%d%H") (number-to-string (adjusted-minites))))
 
 (defun adjusted-minites ()
-  "Get minites of amesh image's path."
+  "Get minites of amesh's image."
   (* (/ (string-to-number (format-time-string "%M")) 5)  5))
 
 (provide 'amesh)
 
 ;;;###autoload
 
-;;; lgtm.el ends here
+;;; amesh.el ends here
