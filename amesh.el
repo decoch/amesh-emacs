@@ -14,11 +14,14 @@
 
 (defun amesh ()
   "Show a amesh image."
-  (progn (kill-buffer (get-buffer-create "*lgtm*"))
-         (switch-to-buffer (get-buffer-create "*lgtm*"))
-         (insert-image-from-url (amesh-image-path))
+  (progn (kill-buffer (get-buffer-create "*amesh*"))
+         (switch-to-buffer (get-buffer-create "*amesh*"))
+         (insert-image-from-url (amesh-image-url))
+         (insert-image-from-url (map-image-url))
          (insert "\n")
-         (insert (amesh-image-path))))
+         (insert (map-image-url))
+         (insert "\n")
+         (insert (amesh-image-url))))
 
 (defun insert-image-from-url (url)
   "Insert image to buffer from URL."
@@ -31,17 +34,23 @@
           (insert-image (create-image data nil t)))
       (kill-buffer buffer))))
 
-(defun amesh-image-path ()
-  "Get path of amesh's image."
-  (concat "http://tokyo-ame.jwa.or.jp/mesh/000/" (adjusted-time) ".gif"))
+(defvar amesh-base-url "http://tokyo-ame.jwa.or.jp")
+
+(defun map-image-url ()
+  "Get url of amesh's map image."
+  (concat amesh-base-url "/map/map000.jpg"))
+
+(defun amesh-image-url ()
+  "Get url of amesh's image."
+  (concat amesh-base-url "/mesh/000/" (adjusted-time) ".gif"))
 
 (defun adjusted-time ()
   "Get time of amesh's image."
-  (concat (format-time-string "%Y%m%d%H") (number-to-string (adjusted-minites))))
+  (concat (format-time-string "%Y%m%d%H") (adjusted-minites)))
 
 (defun adjusted-minites ()
   "Get minites of amesh's image."
-  (* (/ (string-to-number (format-time-string "%M")) 5)  5))
+  (format "%02d" (* (/ (- (string-to-number (format-time-string "%MM")) 1) 5) 5)))
 
 (provide 'amesh)
 
